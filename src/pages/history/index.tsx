@@ -9,41 +9,39 @@ import styles from './styles.module.css'
 export const History: React.FC = (): React.JSX.Element => {
   const [currentQueryId, setCurrentQueryId] = useState<number | null>(null)
   const [results, setResults] = useState<Array<MappedResult>>([])
-  const queries = useLiveQuery(() => db.queries.toArray())
+  const queries = useLiveQuery(() => db.queries.reverse().toArray())
 
   useEffect(() => {
-    const results: Array<MappedResult> = []
-    db.repos
-      .where({ queryId: currentQueryId })
-      .toArray()
-      .then((repos) => {
-        const ownerPromises = repos.map((repo) => {
-          return db.owners
-            .where({ repoId: repo.id })
-            .first()
-            .then((owner) => {
-              if (!owner) {
-                results.push({
-                  ...repo,
-                  id: repo.id || new Date().valueOf(),
-                })
-                return
-              }
-              results.push({
-                ...repo,
-                id: repo.id || new Date().valueOf(),
-                owner: {
-                  ...owner,
-                  id: owner.id || new Date().valueOf(),
-                },
-              })
-            })
-        })
+    if (!currentQueryId) {
+      return
+    }
 
-        Promise.all(ownerPromises).then(() => {
-          setResults(results)
-        })
-      })
+    const getItems = async () => {
+      const results: Array<MappedResult> = []
+
+      const repos = await db.repos.where({ queryId: currentQueryId }).toArray()
+
+      for await (const repo of repos) {
+        const result: MappedResult = { ...repo, id: repo.id || new Date().valueOf() }
+
+        const owner = await db.owners.where({ repoId: repo.id }).first()
+
+        if (owner) {
+          result.owner = {
+            ...owner,
+            id: owner.id || new Date().valueOf(),
+          }
+        }
+
+        results.push(result)
+      }
+
+      setResults(results)
+    }
+
+    getItems().catch((e) => {
+      console.error(e.stack || e)
+    })
   }, [currentQueryId])
 
   return (
@@ -76,14 +74,14 @@ export const History: React.FC = (): React.JSX.Element => {
                 <div className={styles.additionalProperties}>
                   <>
                     {query.sort && (
-                      <span className={styles.additionalProperty}>
+                      <span className={styles.additionalProperty} key={`${queryId}-sort-${query.sort.field}`}>
                         Sort: {query.sort.field} {query.sort.direction}
                       </span>
                     )}
                   </>
                   <>
                     {Object.entries(query.filters || {}).map(([field, filterValue]) => (
-                      <span className={styles.additionalProperty}>
+                      <span className={styles.additionalProperty} key={`${queryId}-${field}-${filterValue}`}>
                         {field}: {filterValue}
                       </span>
                     ))}

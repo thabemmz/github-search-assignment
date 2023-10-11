@@ -72,8 +72,6 @@ export const Search: React.FC = (): React.JSX.Element => {
       return
     }
 
-    console.log('kom je hier?')
-
     const storeQueryResult = async () => {
       // Since we need to store items in three different tables, let's create a transaction. If one of the writes fails,
       // the entire transaction will be rolled back, meaning we won't have corrupt data.
