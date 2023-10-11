@@ -7,7 +7,7 @@ export const SearchResults: React.FC<Props> = ({ results }): React.JSX.Element =
   return (
     <div className={styles.cardlist}>
       {(results || []).map((result) => {
-        const ownerProps = result.owner ? result.owner : {}
+        const ownerProps = result.owner ? { owner: result.owner } : {}
 
         return (
           <SearchResultCard
