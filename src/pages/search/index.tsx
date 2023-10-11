@@ -8,6 +8,7 @@ import {QueryContext} from '../../providers/QueryProvider'
 import {Octokit} from "@octokit/rest";
 import {SortFieldEnum,SortDirectionEnum, State, FilterFieldEnum} from "../../providers/QueryProvider/types.ts";
 import styles from './styles.module.css'
+import {Link} from "react-router-dom";
 
 const octokit = new Octokit({
   userAgent: 'github-search-assignment v1.0.0'
@@ -112,6 +113,7 @@ function Search() {
       <div className={styles.searchbar}>
         <SearchBar isLoading={isLoading} />
         {hadError && (<p>{queryResult.error}</p>)}
+        <Link to={'/history'}>History</Link>
       </div>
       {hadSuccess && (
         <div className={styles.results}>
