@@ -1,3 +1,5 @@
+import {State} from "../../providers/QueryProvider/types.ts";
+
 export interface MappedResult {
     id: number
     url: string
@@ -15,7 +17,7 @@ export interface MappedResult {
 
 export interface IQueryResult {
     error: string | null
-    forQuery: string
+    forQuery: State
     numResults: number | null
     results: Array<MappedResult> | null
 }

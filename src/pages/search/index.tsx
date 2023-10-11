@@ -34,7 +34,7 @@ function Search() {
             setIsLoading(true)
 
             // Create a clone of the query to make sure the query state isn't modified when getting the response.
-            const requestQuery = query.query
+            const requestQuery = {...query}
 
             octokit.rest.search.repos({
                 q: constructQuery(query.query, query.filters),
@@ -70,7 +70,7 @@ function Search() {
         }
 
         db.transaction('rw', db.queries, db.repos, db.owners, function () {
-            return db.queries.add({query: queryResult.forQuery, filters: null, sort: null, timestamp: new Date()}).then((queryId) => {
+            return db.queries.add({...queryResult.forQuery, timestamp: new Date()}).then((queryId) => {
                 (queryResult.results || []).slice(0, 10).forEach(result => {
                     const {owner, ...otherResultProps} = result
 
@@ -146,7 +146,7 @@ function Search() {
         } : undefined
     }))
 
-    const handleErrorResult = (error: string, query: string): void => {
+    const handleErrorResult = (error: string, query: State): void => {
         setQueryResult({
             error,
             forQuery: query,
@@ -169,7 +169,7 @@ function Search() {
                         <FilterOptions/>
                     </div>
                     <div className={styles.resultlist}>
-                        <h2>{queryResult.numResults} results for query "{queryResult.forQuery}"</h2>
+                        <h2>{queryResult.numResults} results for query "{queryResult.forQuery.query}"</h2>
                         <SortOptions/>
                         {queryResult.results && <SearchResults results={queryResult.results}/>}
                     </div>
