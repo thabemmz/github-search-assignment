@@ -1,14 +1,15 @@
 import React, {ChangeEvent, HTMLInputTypeAttribute} from 'react'
 
 interface IProps {
-  disabled: boolean
+  disabled?: boolean
   onChange?: (value: string) => void
+  placeholder?: string
   type?: HTMLInputTypeAttribute
   value?: string
 }
 
 export const Input: React.FC<IProps> = (props): React.JSX.Element => {
-  const { disabled, onChange, type = 'text' } = props
+  const { disabled, onChange, placeholder, type = 'text' } = props
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const newValue = event.target.value
@@ -18,6 +19,6 @@ export const Input: React.FC<IProps> = (props): React.JSX.Element => {
   }
 
   return (
-    <input type={type} disabled={disabled} onChange={handleOnChange} />
+    <input type={type} disabled={disabled} onChange={handleOnChange} placeholder={placeholder} />
   )
 }

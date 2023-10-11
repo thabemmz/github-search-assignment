@@ -4,9 +4,10 @@ import { SearchBar } from './components/SearchBar'
 import { IQueryResult } from "./types.ts";
 import {SearchResults} from "./components/SearchResults";
 import { SortOptions } from './components/SortOptions';
+import { FilterOptions } from './components/FilterOptions';
 import {QueryContext} from '../../providers/QueryProvider'
 import {Octokit} from "@octokit/rest";
-import {SortFieldEnum,SortDirectionEnum, State} from "../../providers/QueryProvider/types.ts";
+import {SortFieldEnum,SortDirectionEnum, State, FilterFieldEnum} from "../../providers/QueryProvider/types.ts";
 
 
 const octokit = new Octokit({
@@ -34,7 +35,7 @@ function Search() {
       const requestQuery = query.query
 
       octokit.rest.search.repos({
-        q: constructQuery(query.query),
+        q: constructQuery(query.query, query.filters),
         ...constructSort(query.sort)
       }).then(response => {
         if (response.status === 200 || response.status === 304) {
@@ -68,10 +69,13 @@ function Search() {
     return SEARCH_IN.map(qualifier => `in:${qualifier}`).join(' ')
   }
 
-  const constructQuery = (query: string): string => {
+  const constructQuery = (query: string, filters: State['filters']): string => {
     const inQualifiers = constructInQualifiers()
+    const followers = filters && filters[FilterFieldEnum.NUMBER_FOLLOWERS] ? `followers:>=${filters[FilterFieldEnum.NUMBER_FOLLOWERS]}` : ''
+    const stars = filters && filters[FilterFieldEnum.NUMBER_STARS] ? `stars:>=${filters[FilterFieldEnum.NUMBER_STARS]}` : ''
+    const language = filters && filters[FilterFieldEnum.LANGUAGE] ? `language:${filters[FilterFieldEnum.LANGUAGE]}` : ''
 
-    return `${query} ${inQualifiers}`
+    return `${query} ${inQualifiers} ${followers} ${stars} ${language}`
   }
 
   const constructSort = (sort: State['sort']): { sort?: 'stars' | 'forks', order?: 'asc' | 'desc' } => {
@@ -112,6 +116,7 @@ function Search() {
       {hadSuccess && (
         <div className='results'>
           <SortOptions />
+          <FilterOptions />
           <SearchResults results={queryResult.results} numResults={queryResult.numResults} query={queryResult.forQuery} />
         </div>
       )}

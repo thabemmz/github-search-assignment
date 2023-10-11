@@ -2,6 +2,7 @@ import React from "react";
 
 export enum QueryReducerActionKindEnum {
   SET_QUERY = 'SET_QUERY',
+  SET_FILTERS = 'SET_FILTERS',
   SET_FILTER = 'SET_FILTER',
   REMOVE_FILTER = 'REMOVE_FILTER',
   REMOVE_FILTERS = 'REMOVE_FILTERS',
@@ -10,7 +11,7 @@ export enum QueryReducerActionKindEnum {
   SUBMIT = 'SUBMIT'
 }
 
-enum FilterFieldEnum {
+export enum FilterFieldEnum {
   NUMBER_FOLLOWERS = 'NUMBER_FOLLOWERS',
   NUMBER_STARS = 'NUMBER_STARS',
   LANGUAGE = 'LANGUAGE'
@@ -36,6 +37,13 @@ type SetFilterAction = {
   payload: {
     field: FilterFieldEnum,
     value: string,
+  }
+}
+
+type SetFiltersAction = {
+  type: QueryReducerActionKindEnum.SET_FILTERS,
+  payload: {
+    [key in FilterFieldEnum]: string
   }
 }
 
@@ -68,17 +76,14 @@ type SubmitAction = {
 
 export type State = {
   query: string,
-  filters: Array<{
-    field: FilterFieldEnum,
-    value: string,
-  }>,
+  filters: { [key in FilterFieldEnum]?: string } | null,
   sort: {
     field: SortFieldEnum,
     direction: SortDirectionEnum
   } | null
 }
 
-export type Actions = SetQueryAction | SetFilterAction | RemoveFilterAction | RemoveFiltersAction | SetSortAction | RemoveSortAction | SubmitAction
+export type Actions = SetQueryAction | SetFiltersAction | SetFilterAction | RemoveFilterAction | RemoveFiltersAction | SetSortAction | RemoveSortAction | SubmitAction
 
 export interface Props {
   children?: React.ReactNode
