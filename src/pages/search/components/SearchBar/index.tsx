@@ -1,9 +1,11 @@
 import React, {useContext, useState} from 'react'
 import { Input } from "../../../../components/Input";
 import { Form } from "../../../../components/Form";
+import { Button } from "../../../../components/Button";
 import { QueryDispatchContext } from "../../../../providers/QueryProvider";
 import { QueryReducerActionKindEnum } from "../../../../providers/QueryProvider/types";
 import { IProps } from './types'
+import styles from './styles.module.css'
 
 export const SearchBar: React.FC<IProps> = ({ isLoading }): React.JSX.Element => {
   const [query, setQuery] = useState<string>('')
@@ -14,9 +16,10 @@ export const SearchBar: React.FC<IProps> = ({ isLoading }): React.JSX.Element =>
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Input type="text" onChange={setQuery} value={query} disabled={isLoading} />
-      <button>{isLoading ? `Submitting...` : `Submit`}</button>
+    <Form className={styles.form} onSubmit={handleSubmit}>
+      <label className={styles.label} htmlFor={'query'}>Search for Github repositories</label>
+      <Input id='query' type="text" onChange={setQuery} value={query} disabled={isLoading} />
+      <Button>{isLoading ? `Submitting...` : `Submit`}</Button>
     </Form>
   )
 }

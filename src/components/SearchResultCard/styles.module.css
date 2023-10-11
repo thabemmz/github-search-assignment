@@ -1,0 +1,50 @@
+.card {
+  border: 1px transparent;
+  border-radius: 10px;
+  padding: 1em;
+  background: #f9f9f9;
+  position: relative;
+  margin-bottom: 1em;
+}
+
+.card a {
+  color: #222;
+}
+
+.card .header {
+  display: flex;
+  flex-direction: column;
+}
+
+.starsForks {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 1em;
+}
+
+.starsForks span {
+  padding: 0.5em;
+  border-radius: 5px;
+  background: #ececec;
+  margin-right: 1em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.starsForks svg {
+  width: 1em;
+}
+
+.user {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+}
+
+.user img {
+  border-radius: 50% !important;
+  width: 3em;
+}

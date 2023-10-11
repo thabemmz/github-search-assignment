@@ -1,0 +1,14 @@
+.form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.form > * {
+  margin-right: 2em;
+}
+
+.form input {
+  width: 30vw;
+}

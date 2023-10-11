@@ -1,11 +1,10 @@
 import React from 'react'
 import { IProps } from './types'
 import {SearchResultCard} from "../../../../components/SearchResultCard";
+import styles from './styles.module.css'
 
-export const SearchResults: React.FC<IProps> = ({ results, numResults, query }): React.JSX.Element => (
-  <div className="results">
-    <p>For query: {query}</p>
-    <p>Number of results: {numResults}</p>
+export const SearchResults: React.FC<IProps> = ({ results }): React.JSX.Element => (
+  <div className={styles.cardlist}>
     {(results || []).map(result => {
       const ownerProps = result.owner ? { owner: { name: result.owner.login, url: result.owner.html_url, avatarUrl: result.owner.avatar_url } } : {}
 

@@ -1,5 +1,4 @@
 import {useContext, useEffect, useState} from 'react'
-import './styles.css'
 import { SearchBar } from './components/SearchBar'
 import { IQueryResult } from "./types.ts";
 import {SearchResults} from "./components/SearchResults";
@@ -8,7 +7,7 @@ import { FilterOptions } from './components/FilterOptions';
 import {QueryContext} from '../../providers/QueryProvider'
 import {Octokit} from "@octokit/rest";
 import {SortFieldEnum,SortDirectionEnum, State, FilterFieldEnum} from "../../providers/QueryProvider/types.ts";
-
+import styles from './styles.module.css'
 
 const octokit = new Octokit({
   userAgent: 'github-search-assignment v1.0.0'
@@ -110,17 +109,23 @@ function Search() {
 
   return (
     <>
-      <div>
+      <div className={styles.searchbar}>
         <SearchBar isLoading={isLoading} />
+        {hadError && (<p>{queryResult.error}</p>)}
       </div>
       {hadSuccess && (
-        <div className='results'>
-          <SortOptions />
-          <FilterOptions />
-          <SearchResults results={queryResult.results} numResults={queryResult.numResults} query={queryResult.forQuery} />
+        <div className={styles.results}>
+          <div className={styles.filterbar}>
+            <h2>Filter</h2>
+            <FilterOptions />
+          </div>
+          <div className={styles.resultlist}>
+            <h2>{queryResult.numResults} results for query "{queryResult.forQuery}"</h2>
+            <SortOptions />
+            <SearchResults results={queryResult.results} />
+        </div>
         </div>
       )}
-      {hadError && (<p>{queryResult.error}</p>)}
     </>
   )
 }

@@ -1,0 +1,22 @@
+.searchbar {
+  padding: 2rem;
+  box-shadow: 0 4px 6px -6px #222;
+}
+
+.results {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.filterbar {
+  width: 25vw;
+  flex-shrink: 0;
+  padding: 1em;
+  box-shadow: 4px 0 6px -6px #222;
+}
+
+.resultlist {
+  padding: 1em;
+}

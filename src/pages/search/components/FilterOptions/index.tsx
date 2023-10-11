@@ -3,6 +3,8 @@ import {QueryContext, QueryDispatchContext} from "../../../../providers/QueryPro
 import {QueryReducerActionKindEnum, FilterFieldEnum} from '../../../../providers/QueryProvider/types.ts'
 import {Input} from "../../../../components/Input";
 import {Form} from "../../../../components/Form";
+import styles from './styles.module.css';
+import {Button} from "../../../../components/Button";
 
 export const FilterOptions: React.FC = (): React.JSX.Element => {
   const dispatch = useContext(QueryDispatchContext);
@@ -25,10 +27,21 @@ export const FilterOptions: React.FC = (): React.JSX.Element => {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Input placeholder="Filter on language" type="text" onChange={setLanguage} value={language} />
-      <Input placeholder="Filter on minimum number of stars" type="number" onChange={(value) => setNumStars(parseInt(value))} value={numStars.toString()} />
-      <Input placeholder="Filter on minimum number of followers" type="number" onChange={(value) => setNumFollowers(parseInt(value))} value={numFollowers.toString()} />
-      <button>Submit</button>
+      <div className={styles.field}>
+        <label htmlFor="language">Programming language:</label>
+        <Input id="language" type="text" onChange={setLanguage} value={language} />
+      </div>
+
+      <div className={styles.field}>
+        <label htmlFor="numStars">Minimum number of stars:</label>
+        <Input id="numStars" type="number" onChange={(value) => setNumStars(parseInt(value))} value={numStars.toString()} />
+      </div>
+
+      <div className={styles.field}>
+        <label htmlFor="numFollowers">Minimum number of followers:</label>
+        <Input id="numFollowers" type="number" onChange={(value) => setNumFollowers(parseInt(value))} value={numFollowers.toString()} />
+      </div>
+      <Button>Apply filters</Button>
     </Form>
   )
 
