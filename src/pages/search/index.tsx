@@ -112,7 +112,7 @@ export const Search: React.FC = (): React.JSX.Element => {
         <div className={styles.results}>
           <div className={styles.filterbar}>
             <h2>Filter</h2>
-            <FilterOptions />
+            <FilterOptions isLoading={isLoading} />
           </div>
           <div className={styles.resultlist}>
             <h2>
