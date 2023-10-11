@@ -5,16 +5,12 @@ import { SearchResults } from './components/SearchResults'
 import { SortOptions } from './components/SortOptions'
 import { FilterOptions } from './components/FilterOptions'
 import { QueryContext } from '../../providers/QueryProvider'
-import { Octokit } from '@octokit/rest'
 import { SortFieldEnum, SortDirectionEnum, State, FilterFieldEnum } from '../../providers/QueryProvider/types'
 import styles from './styles.module.css'
 import { Link } from 'react-router-dom'
+import { octokit } from '../../utils/octokit'
 import { db } from '../../utils/db'
 import { Endpoints } from '@octokit/types'
-
-const octokit = new Octokit({
-  userAgent: 'github-search-assignment v1.0.0',
-})
 
 const SEARCH_IN = ['name', 'description', 'topics', 'readme']
 
