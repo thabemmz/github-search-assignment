@@ -1,5 +1,5 @@
-import { IQueryResult } from "../../types.ts";
+import {MappedResult} from "../../types.ts";
 
 export interface IProps {
-  results: IQueryResult['results']
+  results: Array<MappedResult>
 }
