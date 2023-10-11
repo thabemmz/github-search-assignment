@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { SearchBar } from './components/SearchBar'
 import { IQueryResult } from './types'
-import { SearchResults } from './components/SearchResults'
+import { SearchResults } from '../../components/SearchResults'
 import { SortOptions } from './components/SortOptions'
 import { FilterOptions } from './components/FilterOptions'
 import { QueryContext } from '../../providers/QueryProvider'

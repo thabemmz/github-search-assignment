@@ -1,6 +1,6 @@
 import React from 'react'
-import { Props } from './types'
-import { SearchResultCard } from '../../../../components/SearchResultCard'
+import { Props } from './types.ts'
+import { SearchResultCard } from '../SearchResultCard'
 import styles from './styles.module.css'
 
 export const SearchResults: React.FC<Props> = ({ results }): React.JSX.Element => {
