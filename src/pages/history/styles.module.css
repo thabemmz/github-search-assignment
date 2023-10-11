@@ -1,0 +1,60 @@
+.header {
+    margin: 1em;
+}
+
+.results {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: flex-start;
+}
+
+.searchresultsbar {
+    width: 25vw;
+    flex-shrink: 0;
+    padding: 0 1em;
+    box-shadow: 4px 0 6px -6px #222;
+}
+
+.historyItem {
+    margin-bottom: 1em;
+    padding: 1em;
+    background: #f9f9f9;
+    color: #000;
+    cursor: pointer;
+}
+
+.historyItem.current {
+    background: gainsboro;
+}
+
+.timestamp {
+    font-size: 0.8em;
+    font-weight: normal;
+    display: block;
+}
+
+.query {
+    font-weight: bold;
+}
+
+.additionalProperties {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.additionalProperty {
+    font-size: 0.8em;
+    display: inline-block;
+    background: #ececec;
+    color: #000;
+    margin: 0.25em;
+    padding: 0.5em;
+    border-radius: 3px;
+}
+
+.resultslist {
+    align-items: stretch;
+    flex-grow: 1;
+}

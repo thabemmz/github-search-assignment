@@ -4,6 +4,7 @@ import { db } from '../../utils/db'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { SearchResults } from '../../components/SearchResults'
 import { MappedResult } from '../search/types'
+import styles from './styles.module.css'
 
 export const History: React.FC = (): React.JSX.Element => {
   const [currentQueryId, setCurrentQueryId] = useState<number | null>(null)
@@ -47,10 +48,12 @@ export const History: React.FC = (): React.JSX.Element => {
 
   return (
     <>
-      <h1>History</h1>
-      <Link to={'/'}>Back to live search</Link>
-      <div>
-        <ul>
+      <div className={styles.header}>
+        <h1>History</h1>
+        <Link to={'/'}>Back to live search</Link>
+      </div>
+      <div className={styles.results}>
+        <div className={styles.searchresultsbar}>
           {(queries || []).map((query) => {
             const queryId = query.id
 
@@ -59,25 +62,39 @@ export const History: React.FC = (): React.JSX.Element => {
             }
 
             return (
-              <li
+              <div
+                className={`${styles.historyItem} ${currentQueryId === queryId ? styles.current : ''}`}
                 key={queryId}
                 onClick={(e) => {
                   e.preventDefault()
                   setCurrentQueryId(queryId)
                 }}
               >
-                {query.query}
-              </li>
+                <span className={styles.timestamp}>{query.timestamp.toLocaleString('nl-NL')}</span>
+                <span className={styles.query}>{query.query}</span>
+
+                <div className={styles.additionalProperties}>
+                  <>
+                    {query.sort && (
+                      <span className={styles.additionalProperty}>
+                        Sort: {query.sort.field} {query.sort.direction}
+                      </span>
+                    )}
+                  </>
+                  <>
+                    {Object.entries(query.filters || {}).map(([field, filterValue]) => (
+                      <span className={styles.additionalProperty}>
+                        {field}: {filterValue}
+                      </span>
+                    ))}
+                  </>
+                </div>
+              </div>
             )
           })}
-        </ul>
-      </div>
-      {currentQueryId && (
-        <div>
-          <h1>Results</h1>
-          <SearchResults results={results} />
         </div>
-      )}
+        <div className={styles.resultslist}>{currentQueryId && <SearchResults results={results} />}</div>
+      </div>
     </>
   )
 }
