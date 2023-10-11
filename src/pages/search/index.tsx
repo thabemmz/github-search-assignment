@@ -6,6 +6,7 @@ import {SearchResults} from "./components/SearchResults";
 import { SortOptions } from './components/SortOptions';
 import {QueryContext} from '../../providers/QueryProvider'
 import {Octokit} from "@octokit/rest";
+import {SortFieldEnum,SortDirectionEnum, State} from "../../providers/QueryProvider/types.ts";
 
 
 const octokit = new Octokit({
@@ -34,7 +35,7 @@ function Search() {
 
       octokit.rest.search.repos({
         q: constructQuery(query.query),
-        sort: constructSort(query.sort)
+        ...constructSort(query.sort)
       }).then(response => {
         if (response.status === 200 || response.status === 304) {
           return setQueryResult({
@@ -73,6 +74,27 @@ function Search() {
     return `${query} ${inQualifiers}`
   }
 
+  const constructSort = (sort: State['sort']): { sort?: 'stars' | 'forks', order?: 'asc' | 'desc' } => {
+    if (!sort || !sort.field) {
+      return {}
+    }
+
+    const fieldMap: {[key in SortFieldEnum]: 'stars' | 'forks'} = {
+      [SortFieldEnum.STARS]: 'stars',
+      [SortFieldEnum.FORKS]: 'forks'
+    }
+
+    const orderMap: {[key in SortDirectionEnum]: 'asc' | 'desc'} = {
+      [SortDirectionEnum.ASC]: 'asc',
+      [SortDirectionEnum.DESC]: 'desc'
+    }
+
+    return {
+      sort: fieldMap[sort.field],
+      order: orderMap[sort.direction],
+    }
+  }
+
   const handleErrorResult = (error: string, query: string): void => {
     setQueryResult({
       error,
@@ -89,6 +111,7 @@ function Search() {
       </div>
       {hadSuccess && (
         <div className='results'>
+          <SortOptions />
           <SearchResults results={queryResult.results} numResults={queryResult.numResults} query={queryResult.forQuery} />
         </div>
       )}

@@ -10,7 +10,7 @@ export const SearchResults: React.FC<IProps> = ({ results, numResults, query }):
       const ownerProps = result.owner ? { owner: { name: result.owner.login, url: result.owner.html_url, avatarUrl: result.owner.avatar_url } } : {}
 
       return (<SearchResultCard key={result.id} name={result.name} description={result.description || ''}
-                        url={result.html_url} stars={result.score} forks={result.forks} {...ownerProps} />)
+                        url={result.html_url} stars={result.stargazers_count} forks={result.forks} {...ownerProps} />)
     })}
   </div>
 )

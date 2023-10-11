@@ -10,20 +10,20 @@ export const SortOptions: React.FC = (): React.JSX.Element => {
   const currentForkSort = sort?.field === SortFieldEnum.FORKS ? sort?.direction : ''
 
   const handleSort = (field: SortFieldEnum): void => {
-    if (sort?.field === field && sort?.direction === SortDirectionEnum.ASC) {
+    if (sort?.field === field && sort?.direction === SortDirectionEnum.DESC) {
       // Field currently is sorted ascending, so we want to sort descending
-      dispatch({ type: QueryReducerActionKindEnum.SET_SORT, payload: { field, direction: SortDirectionEnum.DESC } })
+      dispatch({ type: QueryReducerActionKindEnum.SET_SORT, payload: { field, direction: SortDirectionEnum.ASC } })
       return
     }
 
-    if (sort?.field === field && sort?.direction === SortDirectionEnum.DESC) {
+    if (sort?.field === field && sort?.direction === SortDirectionEnum.ASC) {
       // Field currently is sorted descending, so we want to remove the sort
       dispatch({ type: QueryReducerActionKindEnum.REMOVE_SORT })
       return
     }
 
     // In all other scenarios, apply sorting for this field
-    dispatch({ type: QueryReducerActionKindEnum.SET_SORT, payload: { field, direction: SortDirectionEnum.ASC } })
+    dispatch({ type: QueryReducerActionKindEnum.SET_SORT, payload: { field, direction: SortDirectionEnum.DESC } })
   }
 
   return (
