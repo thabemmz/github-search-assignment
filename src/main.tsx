@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import Search from './pages/search/index.tsx'
+import Search from './pages/search'
 import { History } from './pages/history'
 import './index.css'
 import {QueryProvider} from "./providers/QueryProvider";

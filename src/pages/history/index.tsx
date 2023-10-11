@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import {db} from '../../utils/db'
 import {useLiveQuery} from "dexie-react-hooks";
 import {SearchResults} from "../search/components/SearchResults";
-import {MappedResult} from "../search/types.ts";
+import {MappedResult} from "../search/types";
 
 export const History: React.FC = (): React.JSX.Element => {
     const [currentQueryId, setCurrentQueryId] = useState<number | null>(null)

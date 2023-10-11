@@ -1,12 +1,12 @@
 import {useContext, useEffect, useState} from 'react'
 import {SearchBar} from './components/SearchBar'
-import {IQueryResult, MappedResult} from "./types.ts";
+import {IQueryResult, MappedResult} from "./types";
 import {SearchResults} from "./components/SearchResults";
 import {SortOptions} from './components/SortOptions';
 import {FilterOptions} from './components/FilterOptions';
 import {QueryContext} from '../../providers/QueryProvider'
 import {Octokit} from "@octokit/rest";
-import {SortFieldEnum, SortDirectionEnum, State, FilterFieldEnum} from "../../providers/QueryProvider/types.ts";
+import {SortFieldEnum, SortDirectionEnum, State, FilterFieldEnum} from "../../providers/QueryProvider/types";
 import styles from './styles.module.css'
 import {Link} from "react-router-dom";
 import {db} from '../../utils/db'

@@ -1,6 +1,6 @@
 import React, {useContext, useState} from 'react'
 import {QueryContext, QueryDispatchContext} from "../../../../providers/QueryProvider";
-import {QueryReducerActionKindEnum, FilterFieldEnum} from '../../../../providers/QueryProvider/types.ts'
+import {QueryReducerActionKindEnum, FilterFieldEnum} from '../../../../providers/QueryProvider/types'
 import {Input} from "../../../../components/Input";
 import {Form} from "../../../../components/Form";
 import styles from './styles.module.css';

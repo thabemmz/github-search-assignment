@@ -1,6 +1,6 @@
 import React, {useContext} from 'react'
 import {QueryContext, QueryDispatchContext} from "../../../../providers/QueryProvider";
-import {QueryReducerActionKindEnum, SortDirectionEnum, SortFieldEnum} from '../../../../providers/QueryProvider/types.ts'
+import {QueryReducerActionKindEnum, SortDirectionEnum, SortFieldEnum} from '../../../../providers/QueryProvider/types'
 import styles from './styles.module.css'
 
 export const SortOptions: React.FC = (): React.JSX.Element => {

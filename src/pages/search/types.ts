@@ -1,4 +1,4 @@
-import {State} from "../../providers/QueryProvider/types.ts";
+import {State} from "../../providers/QueryProvider/types";
 
 export interface MappedResult {
     id: number

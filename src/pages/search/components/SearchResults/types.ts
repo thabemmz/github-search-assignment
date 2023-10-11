@@ -1,4 +1,4 @@
-import {MappedResult} from "../../types.ts";
+import {MappedResult} from "../../types";
 
 export interface Props {
   results: Array<MappedResult>
