@@ -24,21 +24,20 @@ export interface Owner {
   avatarUrl: string
 }
 
-
 export class GithubSearchAssignmentDb extends Dexie {
   // We just tell the typing system this is the case
-  queries!: Table<Query>;
-  repos!: Table<Repo>;
-  owners!: Table<Owner>;
+  queries!: Table<Query>
+  repos!: Table<Repo>
+  owners!: Table<Owner>
 
   constructor() {
-    super('github-search-assignment');
+    super('github-search-assignment')
     this.version(1).stores({
-      queries: "++id, timestamp",
-      repos: "id, queryId",
-      owners: "id, repoId",
-    });
+      queries: '++id, timestamp',
+      repos: 'id, queryId',
+      owners: 'id, repoId',
+    })
   }
 }
 
-export const db = new GithubSearchAssignmentDb();
+export const db = new GithubSearchAssignmentDb()

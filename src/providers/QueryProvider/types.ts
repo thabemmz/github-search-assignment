@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 export enum QueryReducerActionKindEnum {
   SET_QUERY = 'SET_QUERY',
@@ -8,18 +8,18 @@ export enum QueryReducerActionKindEnum {
   REMOVE_FILTERS = 'REMOVE_FILTERS',
   SET_SORT = 'SET_SORT',
   REMOVE_SORT = 'REMOVE_SORT',
-  SUBMIT = 'SUBMIT'
+  SUBMIT = 'SUBMIT',
 }
 
 export enum FilterFieldEnum {
   NUMBER_FOLLOWERS = 'NUMBER_FOLLOWERS',
   NUMBER_STARS = 'NUMBER_STARS',
-  LANGUAGE = 'LANGUAGE'
+  LANGUAGE = 'LANGUAGE',
 }
 
 export enum SortFieldEnum {
   STARS = 'STARS',
-  FORKS = 'FORKS'
+  FORKS = 'FORKS',
 }
 
 export enum SortDirectionEnum {
@@ -28,27 +28,27 @@ export enum SortDirectionEnum {
 }
 
 type SetQueryAction = {
-  type: QueryReducerActionKindEnum.SET_QUERY,
+  type: QueryReducerActionKindEnum.SET_QUERY
   payload: string
 }
 
 type SetFilterAction = {
-  type: QueryReducerActionKindEnum.SET_FILTER,
+  type: QueryReducerActionKindEnum.SET_FILTER
   payload: {
-    field: FilterFieldEnum,
-    value: string,
+    field: FilterFieldEnum
+    value: string
   }
 }
 
 type SetFiltersAction = {
-  type: QueryReducerActionKindEnum.SET_FILTERS,
+  type: QueryReducerActionKindEnum.SET_FILTERS
   payload: {
     [key in FilterFieldEnum]: string
   }
 }
 
 type RemoveFilterAction = {
-  type: QueryReducerActionKindEnum.REMOVE_FILTER,
+  type: QueryReducerActionKindEnum.REMOVE_FILTER
   payload: {
     field: FilterFieldEnum
   }
@@ -59,15 +59,15 @@ type RemoveFiltersAction = {
 }
 
 type SetSortAction = {
-  type: QueryReducerActionKindEnum.SET_SORT,
+  type: QueryReducerActionKindEnum.SET_SORT
   payload: {
-    field: SortFieldEnum,
+    field: SortFieldEnum
     direction: SortDirectionEnum
   }
 }
 
 type RemoveSortAction = {
-  type: QueryReducerActionKindEnum.REMOVE_SORT,
+  type: QueryReducerActionKindEnum.REMOVE_SORT
 }
 
 type SubmitAction = {
@@ -75,17 +75,24 @@ type SubmitAction = {
 }
 
 export type State = {
-  query: string,
-  filters: { [key in FilterFieldEnum]?: string } | null,
+  query: string
+  filters: { [key in FilterFieldEnum]?: string } | null
   sort: {
-    field: SortFieldEnum,
+    field: SortFieldEnum
     direction: SortDirectionEnum
   } | null
 }
 
-export type Actions = SetQueryAction | SetFiltersAction | SetFilterAction | RemoveFilterAction | RemoveFiltersAction | SetSortAction | RemoveSortAction | SubmitAction
+export type Actions =
+  | SetQueryAction
+  | SetFiltersAction
+  | SetFilterAction
+  | RemoveFilterAction
+  | RemoveFiltersAction
+  | SetSortAction
+  | RemoveSortAction
+  | SubmitAction
 
 export interface Props {
   children?: React.ReactNode
 }
-

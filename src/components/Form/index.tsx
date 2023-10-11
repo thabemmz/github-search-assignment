@@ -1,7 +1,7 @@
-import React, {FormEvent} from 'react'
+import React, { FormEvent } from 'react'
 import { Props } from './types'
 
-export const Form: React.FC<Props> = ({children, onSubmit, ...otherProps}): React.JSX.Element => {
+export const Form: React.FC<Props> = ({ children, onSubmit, ...otherProps }): React.JSX.Element => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
     if (onSubmit) {
@@ -10,7 +10,7 @@ export const Form: React.FC<Props> = ({children, onSubmit, ...otherProps}): Reac
   }
 
   return (
-    <form {...otherProps} onSubmit={handleSubmit} >
+    <form {...otherProps} onSubmit={handleSubmit}>
       {children}
     </form>
   )

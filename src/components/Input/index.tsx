@@ -1,6 +1,6 @@
-import React, {ChangeEvent} from 'react'
+import React, { ChangeEvent } from 'react'
 import styles from './styles.module.css'
-import  {Props} from './types'
+import { Props } from './types'
 
 export const Input: React.FC<Props> = (props): React.JSX.Element => {
   const { onChange, type = 'text', value, ...otherProps } = props
@@ -12,7 +12,5 @@ export const Input: React.FC<Props> = (props): React.JSX.Element => {
     }
   }
 
-  return (
-    <input className={styles.input} type={type} value={value} onChange={handleOnChange} {...otherProps} />
-  )
+  return <input className={styles.input} type={type} value={value} onChange={handleOnChange} {...otherProps} />
 }

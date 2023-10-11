@@ -1,5 +1,5 @@
-import { QueryReducerActionKindEnum, State, Actions } from './types';
-import {Reducer} from "react";
+import { QueryReducerActionKindEnum, State, Actions } from './types'
+import { Reducer } from 'react'
 
 export const queryReducer: Reducer<State, Actions> = (state, action) => {
   switch (action.type) {
