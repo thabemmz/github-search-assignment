@@ -1,18 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { SearchBar } from './components/SearchBar'
-import { IQueryResult, MappedResult } from './types'
+import { IQueryResult } from './types'
 import { SearchResults } from './components/SearchResults'
 import { SortOptions } from './components/SortOptions'
 import { FilterOptions } from './components/FilterOptions'
 import { QueryContext } from '../../providers/QueryProvider'
-import { SortFieldEnum, SortDirectionEnum, State, FilterFieldEnum } from '../../providers/QueryProvider/types'
+import { State } from '../../providers/QueryProvider/types'
 import styles from './styles.module.css'
 import { Link } from 'react-router-dom'
 import { octokit } from '../../utils/octokit'
 import { db } from '../../utils/db'
-import { Endpoints } from '@octokit/types'
-
-const SEARCH_IN = ['name', 'description', 'topics', 'readme']
+import { constructQuery, constructSort, sanitizeResults } from './helpers'
 
 export const Search: React.FC = (): React.JSX.Element => {
   const [queryResult, setQueryResult] = useState<IQueryResult | null>(null)
@@ -91,67 +89,6 @@ export const Search: React.FC = (): React.JSX.Element => {
     })
   }, [queryResult])
 
-  const hadSuccess = queryResult && !queryResult.error
-  const hadError = queryResult && queryResult.error
-
-  const constructInQualifiers = (): string => {
-    return SEARCH_IN.map((qualifier) => `in:${qualifier}`).join(' ')
-  }
-
-  const constructQuery = (query: string, filters: State['filters']): string => {
-    const inQualifiers = constructInQualifiers()
-    const followers =
-      filters && filters[FilterFieldEnum.NUMBER_FOLLOWERS]
-        ? `followers:>=${filters[FilterFieldEnum.NUMBER_FOLLOWERS]}`
-        : ''
-    const stars =
-      filters && filters[FilterFieldEnum.NUMBER_STARS] ? `stars:>=${filters[FilterFieldEnum.NUMBER_STARS]}` : ''
-    const language = filters && filters[FilterFieldEnum.LANGUAGE] ? `language:${filters[FilterFieldEnum.LANGUAGE]}` : ''
-
-    return `${query} ${inQualifiers} ${followers} ${stars} ${language}`
-  }
-
-  const constructSort = (sort: State['sort']): { sort?: 'stars' | 'forks'; order?: 'asc' | 'desc' } => {
-    if (!sort || !sort.field) {
-      return {}
-    }
-
-    const fieldMap: { [key in SortFieldEnum]: 'stars' | 'forks' } = {
-      [SortFieldEnum.STARS]: 'stars',
-      [SortFieldEnum.FORKS]: 'forks',
-    }
-
-    const orderMap: { [key in SortDirectionEnum]: 'asc' | 'desc' } = {
-      [SortDirectionEnum.ASC]: 'asc',
-      [SortDirectionEnum.DESC]: 'desc',
-    }
-
-    return {
-      sort: fieldMap[sort.field],
-      order: orderMap[sort.direction],
-    }
-  }
-
-  const sanitizeResults = (
-    results: Endpoints['GET /search/repositories']['response']['data']['items']
-  ): Array<MappedResult> =>
-    (results || []).map((result) => ({
-      id: result.id,
-      url: result.html_url,
-      name: result.name,
-      description: result.description || '',
-      stars: result.stargazers_count,
-      forks: result.forks,
-      owner: result.owner
-        ? {
-            id: result.owner.id,
-            url: result.owner.html_url,
-            name: result.owner.login,
-            avatarUrl: result.owner.avatar_url,
-          }
-        : undefined,
-    }))
-
   const handleErrorResult = (error: string, query: State): void => {
     setQueryResult({
       error,
@@ -160,6 +97,9 @@ export const Search: React.FC = (): React.JSX.Element => {
       results: null,
     })
   }
+
+  const hadSuccess = queryResult && !queryResult.error
+  const hadError = queryResult && queryResult.error
 
   return (
     <>
