@@ -17,75 +17,95 @@ export const Search: React.FC = (): React.JSX.Element => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const query = useContext(QueryContext)
 
+  // The useEffect hook below makes the actual call to Github, given that the query state (retrieved from the context)
+  // has changed.
   useEffect(() => {
-    if (query.query) {
-      // Always start loading to prevent double submits
-      setIsLoading(true)
-
-      // Create a clone of the query to make sure the query state isn't modified when getting the response.
-      const requestQuery = { ...query }
-
-      octokit.rest.search
-        .repos({
-          q: constructQuery(query.query, query.filters),
-          ...constructSort(query.sort),
-        })
-        .then((response) => {
-          if (response.status === 200 || response.status === 304) {
-            return setQueryResult({
-              error: null,
-              forQuery: requestQuery,
-              numResults: response.data.total_count,
-              results: sanitizeResults(response.data.items),
-            })
-          }
-
-          if (response.status === 403) {
-            // Rate limits!
-            return handleErrorResult('Rate limit exceeded, please try again later.', requestQuery)
-          }
-
-          return handleErrorResult('An error occurred, please try again.', requestQuery)
-        })
-        .catch((_e) => {
-          return handleErrorResult('An error occurred, please try again.', requestQuery)
-        })
-        .finally(() => {
-          // We've either finished successfully or errored, but we have a response, so stop loading.
-          setIsLoading(false)
-        })
+    if (!query.query) {
+      // When we don't have a query, we won't make a call.
+      return
     }
+
+    // Always start loading to prevent double submits
+    setIsLoading(true)
+
+    // Create a clone of the query to make sure the query state isn't modified when getting the response.
+    const requestQuery = { ...query }
+
+    // Define async method to be able to use async / await within useEffect
+    const fetchAndProcessQuery = async () => {
+      const response = await octokit.rest.search.repos({
+        q: constructQuery(query.query, query.filters),
+        ...constructSort(query.sort),
+      })
+
+      if (response.status === 200 || response.status === 304) {
+        // We have a success response, store the results!
+        return setQueryResult({
+          error: null,
+          forQuery: requestQuery,
+          numResults: response.data.total_count,
+          results: sanitizeResults(response.data.items),
+        })
+      }
+
+      if (response.status === 403) {
+        // Rate limits were hit. Report this back to the user so they know what happened.
+        return handleErrorResult('Rate limit exceeded, please try again later.', requestQuery)
+      }
+
+      return handleErrorResult('An error occurred, please try again.', requestQuery)
+    }
+
+    fetchAndProcessQuery()
+      .catch((_e) => {
+        return handleErrorResult('An error occurred, please try again.', requestQuery)
+      })
+      .finally(() => {
+        // We've either finished successfully or errored, but we have a response, so stop loading.
+        setIsLoading(false)
+      })
   }, [query])
 
+  // The useEffect hook below stores the query result in the database to be able to retrieve the result from history
   useEffect(() => {
     if (!queryResult) {
       return
     }
 
-    db.transaction('rw', db.queries, db.repos, db.owners, function () {
-      return db.queries.add({ ...queryResult.forQuery, timestamp: new Date() }).then((queryId) => {
-        ;(queryResult.results || []).slice(0, 10).forEach((result) => {
+    console.log('kom je hier?')
+
+    const storeQueryResult = async () => {
+      // Since we need to store items in three different tables, let's create a transaction. If one of the writes fails,
+      // the entire transaction will be rolled back, meaning we won't have corrupt data.
+      db.transaction('rw', db.queries, db.repos, db.owners, async () => {
+        // Start by storing the query itself
+        const queryId = await db.queries.add({ ...queryResult.forQuery, timestamp: new Date() })
+        const relevantResults = (queryResult.results || []).slice(0, 10)
+
+        for await (const result of relevantResults) {
+          // Store the first 10 results in the database
           const { owner, ...otherResultProps } = result
 
-          db.repos
-            .add({
-              ...otherResultProps,
-              queryId,
-            })
-            .then((repoId) => {
-              if (!owner) {
-                return
-              }
+          const repoId = await db.repos.add({
+            ...otherResultProps,
+            queryId,
+          })
 
-              db.owners.add({
-                ...owner,
-                repoId: repoId,
-              })
-            })
-        })
+          if (!owner) {
+            return
+          }
+
+          // Store the owners along with the repos
+          await db.owners.add({
+            ...owner,
+            repoId: repoId,
+          })
+        }
       })
-    }).catch(function (error) {
-      console.error(error.stack || error)
+    }
+
+    storeQueryResult().catch((e) => {
+      console.error(e.stack || e)
     })
   }, [queryResult])
 
