@@ -5,8 +5,9 @@ import { Input } from '../../../../components/Input'
 import { Form } from '../../../../components/Form'
 import styles from './styles.module.css'
 import { Button } from '../../../../components/Button'
+import { Props } from './types'
 
-export const FilterOptions: React.FC = (): React.JSX.Element => {
+export const FilterOptions: React.FC<Props> = ({ isLoading }): React.JSX.Element => {
   const dispatch = useContext(QueryDispatchContext)
   const { filters } = useContext(QueryContext)
   const currentLanguageFilter = filters && filters[FilterFieldEnum.LANGUAGE]
@@ -32,7 +33,7 @@ export const FilterOptions: React.FC = (): React.JSX.Element => {
     <Form onSubmit={handleSubmit}>
       <div className={styles.field}>
         <label htmlFor="language">Programming language:</label>
-        <Input id="language" type="text" onChange={setLanguage} value={language} />
+        <Input id="language" type="text" onChange={setLanguage} value={language} disabled={isLoading} />
       </div>
 
       <div className={styles.field}>
@@ -42,6 +43,7 @@ export const FilterOptions: React.FC = (): React.JSX.Element => {
           type="number"
           onChange={(value) => setNumStars(parseInt(value))}
           value={numStars.toString()}
+          disabled={isLoading}
         />
       </div>
 
@@ -52,9 +54,10 @@ export const FilterOptions: React.FC = (): React.JSX.Element => {
           type="number"
           onChange={(value) => setNumFollowers(parseInt(value))}
           value={numFollowers.toString()}
+          disabled={isLoading}
         />
       </div>
-      <Button>Apply filters</Button>
+      <Button>{isLoading ? 'Loading...' : 'Apply filters'}</Button>
     </Form>
   )
 }

@@ -21,7 +21,7 @@ export const SearchBar: React.FC<Props> = ({ isLoading }): React.JSX.Element => 
         Search for Github repositories
       </label>
       <Input id="query" type="text" onChange={setQuery} value={query} disabled={isLoading} />
-      <Button>{isLoading ? `Submitting...` : `Submit`}</Button>
+      <Button>{isLoading ? `Loading...` : `Submit`}</Button>
     </Form>
   )
 }
