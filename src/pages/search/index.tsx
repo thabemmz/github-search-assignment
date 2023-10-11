@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { SearchBar } from './components/SearchBar'
 import { IQueryResult, MappedResult } from './types'
 import { SearchResults } from './components/SearchResults'
@@ -14,7 +14,7 @@ import { Endpoints } from '@octokit/types'
 
 const SEARCH_IN = ['name', 'description', 'topics', 'readme']
 
-function Search() {
+export const Search: React.FC = (): React.JSX.Element => {
   const [queryResult, setQueryResult] = useState<IQueryResult | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const query = useContext(QueryContext)
@@ -186,5 +186,3 @@ function Search() {
     </>
   )
 }
-
-export default Search
