@@ -1,20 +1,8 @@
 import React from 'react'
 import styles from './styles.module.css'
+import { Props } from './types'
 
-export interface IProps {
-  url: string,
-  name: string,
-  description?: string,
-  stars: number,
-  forks: number,
-  owner?: {
-    url: string,
-    name: string,
-    avatarUrl: string,
-  }
-}
-
-export const SearchResultCard: React.FC<IProps> = ({
+export const SearchResultCard: React.FC<Props> = ({
                                                      url,
                                                      name,
                                                      description,

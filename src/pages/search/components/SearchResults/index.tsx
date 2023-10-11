@@ -1,9 +1,9 @@
 import React from 'react'
-import {IProps} from './types'
+import {Props} from './types'
 import {SearchResultCard} from "../../../../components/SearchResultCard";
 import styles from './styles.module.css'
 
-export const SearchResults: React.FC<IProps> = ({results}): React.JSX.Element => {
+export const SearchResults: React.FC<Props> = ({results}): React.JSX.Element => {
     return (
         <div className={styles.cardlist}>
             {(results || []).map(result => {

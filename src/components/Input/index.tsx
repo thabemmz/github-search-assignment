@@ -1,12 +1,8 @@
-import React, {ChangeEvent, InputHTMLAttributes} from 'react'
+import React, {ChangeEvent} from 'react'
 import styles from './styles.module.css'
+import  {Props} from './types'
 
-interface IProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'value'> {
-  onChange?: (value: string) => void
-  value?: string
-}
-
-export const Input: React.FC<IProps> = (props): React.JSX.Element => {
+export const Input: React.FC<Props> = (props): React.JSX.Element => {
   const { onChange, type = 'text', value, ...otherProps } = props
 
   const handleOnChange = (event: ChangeEvent<HTMLInputElement>): void => {

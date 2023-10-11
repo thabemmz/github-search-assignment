@@ -1,5 +1,5 @@
 import {MappedResult} from "../../types.ts";
 
-export interface IProps {
+export interface Props {
   results: Array<MappedResult>
 }

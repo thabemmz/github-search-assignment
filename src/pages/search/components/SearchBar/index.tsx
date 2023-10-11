@@ -4,10 +4,10 @@ import { Form } from "../../../../components/Form";
 import { Button } from "../../../../components/Button";
 import { QueryDispatchContext } from "../../../../providers/QueryProvider";
 import { QueryReducerActionKindEnum } from "../../../../providers/QueryProvider/types";
-import { IProps } from './types'
+import { Props } from './types'
 import styles from './styles.module.css'
 
-export const SearchBar: React.FC<IProps> = ({ isLoading }): React.JSX.Element => {
+export const SearchBar: React.FC<Props> = ({ isLoading }): React.JSX.Element => {
   const [query, setQuery] = useState<string>('')
   const dispatch = useContext(QueryDispatchContext);
 

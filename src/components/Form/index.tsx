@@ -1,8 +1,5 @@
-import React, {FormEvent, FormHTMLAttributes} from 'react'
-
-type Props = {
-  onSubmit?: (e: FormEvent<HTMLFormElement>) => void
-} & FormHTMLAttributes<HTMLFormElement>
+import React, {FormEvent} from 'react'
+import { Props } from './types'
 
 export const Form: React.FC<Props> = ({children, onSubmit, ...otherProps}): React.JSX.Element => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
